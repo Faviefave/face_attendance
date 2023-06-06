@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block body %}
+    <section class="hero-section">
+      <div class="container-fluid">
+        <div class="container text-center">
+          <h1>Facial Recognition Attendance System</h1>
+          <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <div class="justify-content-md-center">
+                  <div class="card">
+                    <div class="card-header">
+                      Video Attendance System
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">Provide Lecture Information</h5>
+                      <p class="card-text">Provide the details and click the button to start the video attendance system.</p>
+                    </div>
+                  </div>
+                  <br></br>
+                  <form class="row g-3 needs-validation"  action="/display_video", method="post" novalidate>
+                    <div class="col-md-12">
+                      <label for="lecturerId" class="form-label">Lecturer's File Number</label>
+                      <input class="form-control form-control-lg" id="lecturerId" type="text" name = "lecturerId" placeholder="UNIUYO/P/FileNumber" aria-label=".form-control-lg"required>
+                      <div class="valid-feedback">
+                        Looks good!
+                      </div>
+                    </div>
+                    
+                      <div class="col-md-6">
+                        <label for="sessionId" class="form-label">Enter Session</label>
+                        <input class="form-control form-control-lg" id="sessionId" type="text" name="session" placeholder="2021/2022" aria-label=".form-control-lg" required> 
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="semesterId" class="form-label">Select Semester</label>
+                        <select class="form-select form-select-lg mb-3" id="semesterId" name="semester" aria-label=".form-select-lg example" required>
+                          <option selected disabled value="">Current Semester</option>
+                          <option value="1">Semester One</option>
+                          <option value="2">Semester Two</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select semester.
+                        </div>
+                      </div>
+                    
+                      <div class="col-md-6">
+                        <label for="classId" class="form-label">Class</label>
+                        <select class="form-select form-select-lg mb-3" id="classId" name ="klass" aria-label=".form-select-lg" required>
+                          <option selected disabled value="">Choose Class</option>
+                          <option value="1">Computer Year One</option>
+                          <option value="2">Computer Year Two</option>
+                          <option value="3">Computer Year Three</option>
+                          <option value="4">Computer Year Four</option>
+                          <option value="5">Computer Year Five</option>
+                        </select> 
+                        <div class="invalid-feedback">
+                          Please select class.
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="courseId" class="form-label">Course</label>
+                        <select class="form-select form-select-lg mb-3" id="courseId" name="course" required>
+                          <option selected disabled value="">Choose Course</option>
+                          <option value="CPE 512">Computer Programming-CPE 512</option>
+                          <option value="CPE 514">Artificial Intelligence-CPE 514</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select course.
+                        </div>
+                      </div>
+                      <div>
+                        <button class="btn btn-primary" id="btn_startAttendance" type="submit">Start Attendance</button>
+                      </div>
+                  </form>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+      </div>
+    
+    </section>
+    <script>
+          (function() {
+        'use strict'
+      
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+      
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+      
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+    </script>
+{% endblock %}

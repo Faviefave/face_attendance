@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<section class="hero-section">
+    <div class="container-fluid">
+      <div class="container text-center">
+        <div class="row">
+              <h3 class="mt-5">Class Attendance Video System</h3>
+              <!-- <img id="webcam-feed" src={{imgsource}} width="100%"> -->
+              <img id="webcam-feed" src="{{ url_for('video_feed') }}" width="0.1%" >
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}

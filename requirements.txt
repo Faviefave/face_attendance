@@ -1,0 +1,15 @@
+
+numpy
+cmake
+Flask-SocketIO
+flask-cors
+firebase-admin
+eventlet
+pillow
+face_recognition
+dlib >= 19.3.0
+scipy
+opencv-contrib-python
+scikit-learn
+gunicorn
+

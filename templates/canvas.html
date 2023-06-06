@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Flask Client Camera Web App</title>
+
+    <style>
+     #video {
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      
+     }
+    </style>
+  </head>
+
+  <body>
+    <script src ="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>"></script>
+    <div id="operate">
+      <input type="submit" id = "startButton" class="btn btn-primary btn-lg" style="margin-left: auto;" value="Start streaming">
+      <input type="submit" id = "stopButton" class="btn btn-primary btn-lg" style="margin-left: auto;" value="Stop streaming"
+      disabled="disabled">
+  </div><br>
+
+    <div id="container">
+      <video autoplay playsinline id="videoElement"></video>
+      <canvas id="canvas" width="250" height="186"></canvas>
+    </div>
+
+    <div class= 'video'>
+      <img id="image" width="250" height="186">
+    </div>
+    
+    <script src="{{ url_for('static', filename='jquery-3.7.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='opencv.js') }}"></script>
+    <script src="{{ url_for('static', filename='myscripts.js') }}"></script>
+  </body>
+
+</html>
