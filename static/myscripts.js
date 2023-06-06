@@ -5,7 +5,7 @@
       var stopButton = document.getElementById("stopButton");
 
 
-      var socket
+      var socket 
 
       const video = document.querySelector("#videoElement");
 
@@ -58,8 +58,9 @@
     
       startButton.onclick = ()=>{
           startButton.disabled = true;
-          socket = io()
-          socket.connect('http://' + location.hostname + ':5000/')
+
+           socket = io()
+          //socket.connect('http://' + location.hostname + ':5000/')
 
           socket.on('connect', function(){
             console.log("Connected...!", socket.connected);

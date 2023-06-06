@@ -1,5 +1,4 @@
 from flask import Flask, render_template, Response, request, send_from_directory, abort
-from camera import camera_stream
 import base64
 import os
 import cv2
@@ -9,8 +8,9 @@ import time
 import io
 from flask_socketio import SocketIO, emit
 from PIL import Image
-from camera import detectFramefromWeb
 from database import AttendanceRecord
+import face_recognition as fr
+import pickle
 
 
 
@@ -20,13 +20,16 @@ from database import AttendanceRecord
 app = Flask(__name__, template_folder='templates')
 
 app.config["SECRET_KEY"] = "secret"
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
-socketio = SocketIO(app, cors_allowed_origins= ['http://127.0.0.1:5000'])
+socketio = SocketIO(app, cors_allowed_origins='*')
 CORS(app)
 
 #video_capture = cv2.VideoCapture(0) 
 capture_duration = 30
+
+knn_clf = pickle.load(open("knn_model.clf", 'rb'))
+distance_threshold=0.5
 
 isStartAttendance = False
 
@@ -95,6 +98,34 @@ def display_video():
     isStartAttendance = True
     return render_template("video_page.html")
 
+
+def detectFramefromWeb(frame):
+
+    detections = fr.face_locations(frame, model="hog")
+
+    if len(detections) == 0:
+        return frame, None
+    else:
+            
+        embeddings = fr.face_encodings(frame, known_face_locations=detections)
+   
+
+        closest_distances = knn_clf.kneighbors(embeddings, n_neighbors=1)
+        are_matches = [closest_distances[0][i][0] <= distance_threshold for i in range(len(detections))]
+        prediction = [(pred, loc) if rec else ("Unknown", loc) for pred, loc, rec in zip(knn_clf.predict(embeddings), detections, are_matches)]
+
+        # Draw a rectangle around the faces
+        for name, (top, right, bottom, left ) in prediction:
+  
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            # Draw a label with a name below the face
+            cv2.rectangle(frame, (left, bottom-35), (right,bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        return frame, name
+
+
+
 # @app.route("/video_page", methods=["POST"])
 # def attendace_page():
 #     return render_template("webcam.html")
@@ -123,17 +154,17 @@ def display_video():
 
 
 
-def base64_to_image(base64_string):
-    # Extract the base64 encoded binary data from the input string
-    #print(base64_string)
-    #base64_data = base64_string.split(",")[1]
-    # Decode the base64 data to bytes
-    image_bytes = base64.b64decode(base64_string)
-    # Convert the bytes to numpy array
-    image_array = np.frombuffer(image_bytes, dtype=np.uint8)
-    # Decode the numpy array as an image using OpenCV
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-    return image
+# def base64_to_image(base64_string):
+#     # Extract the base64 encoded binary data from the input string
+#     #print(base64_string)
+#     #base64_data = base64_string.split(",")[1]
+#     # Decode the base64 data to bytes
+#     image_bytes = base64.b64decode(base64_string)
+#     # Convert the bytes to numpy array
+#     image_array = np.frombuffer(image_bytes, dtype=np.uint8)
+#     # Decode the numpy array as an image using OpenCV
+#     image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+#     return image
 
 
 # @socketio.on("connect")
@@ -163,4 +194,4 @@ def base64_to_image(base64_string):
 #     emit("response_back", processed_img_data)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)

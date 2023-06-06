@@ -11,8 +11,8 @@ from PIL import Image
 
 
 
-cascPath = 'haarcascade_frontalface_dataset.xml'  # dataset
-faceCascade = cv2.CascadeClassifier(cascPath)
+# cascPath = 'haarcascade_frontalface_dataset.xml'  # dataset
+# faceCascade = cv2.CascadeClassifier(cascPath)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 image_dir = os.path.join(BASE_DIR,"images")
