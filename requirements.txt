@@ -9,7 +9,8 @@ pillow
 face_recognition
 dlib >= 19.3.0
 scipy
-opencv-contrib-python
+opencv-python-headless
+#opencv-contrib-python
 scikit-learn
 gunicorn
 
